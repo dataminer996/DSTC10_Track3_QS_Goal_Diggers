@@ -1,0 +1,21 @@
+rm ../scene_graph_benchmark_tl_1/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_2/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_3/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_4/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_5/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_6/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_7/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_8/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_9/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_10/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_11/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_12/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_13/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_14/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_15/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_16/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_17/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_18/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_19/*mistake*.bin  -fr
+rm ../scene_graph_benchmark_tl_20/*mistake*.bin  -fr
+
