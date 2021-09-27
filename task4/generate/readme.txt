@@ -6,7 +6,7 @@ cd task4
 unzip task4.tar to task4 
 cp task4/generate/data/oscargen_noobj_newdata/data generate/oscargen_noobj_newdata/ -fr
 cp task4/generate/model/oscargen_noobj_newdata/*  generate/oscargen_noobj_newdata/ -fr
-cp task4/generate/model/generagefeature  generate/generagefeature -fr
+cp task4/generate/model/generagefeature/*  generate/generagefeature/ -fr
  
 
 train feature:
