@@ -1,7 +1,7 @@
 
 train feature:
 cd task4/generate/generagefeature
-python4  track3_retrival_train.py  gen_train.bin generateresult retrival_train.bin
+python3  track3_retrival_train.py  gen_train.bin generateresult retrival_train.bin
 
 cp retrival_train.bin  ../../retrieval/oscar_retri_v1/data/train.bin
 
