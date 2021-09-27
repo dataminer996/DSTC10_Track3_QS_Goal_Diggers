@@ -337,7 +337,10 @@ class ModelRunner(object):
     pred_input_fn, _ = self._preprocessor.read_predict([task], split)
     results = self._estimator.predict(input_fn=pred_input_fn, yield_single_examples=True)
     print('predict result', results)
-    output_eval_file = os.path.join(self._config.data_dir, "/prediction/predict_results.txt")
+    train_name = os.path.basename(self._config.model_dir) + '_pred_result.txt'
+    #path to save prediction
+    output_eval_file = os.path.join(self._config.save_prediction, train_name)
+    #output_eval_file = os.path.join(self._config.data_dir, "/prediction/predict_results.txt")
     writer = tf.io.gfile.GFile(output_eval_file, mode='w+')
 
     labels = []

@@ -38,8 +38,7 @@ class FinetuningConfig(object):
         self.keep_all_models = True  # if False, only keep the last trial's ckpt
         self.use_sgnet = use_sgnet
         self.do_predict_split = do_predict_split
-
-        # model
+        self.save_prediction = '../result/prediction'# model
         self.model_size = "base"  # one of "small", "base", or "large"
         self.task_names = ["chunk"]  # which tasks to learn
         # override the default transformer hparams for the provided model size; see
