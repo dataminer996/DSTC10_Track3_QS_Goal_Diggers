@@ -60,7 +60,7 @@ for task 1: gs://tangliang-5/track3/step1_finetuning_models/epoch_3.0_lr_2.2e-05
 ***
 
 `run_step1_finetune.sh`
-
+need to use TPU
 The shell script above runs the following:
 
 ```
