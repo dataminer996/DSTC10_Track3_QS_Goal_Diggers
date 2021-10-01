@@ -79,7 +79,7 @@ def main(args):
         dial = item[-1].item()
         big = did // 100
         small = did % 100
-        index = load_data.get('retrieval_candidates')[big].get('retrieval_candidates')[small].get(
+        index = data.get('retrieval_candidates')[big].get('retrieval_candidates')[small].get(
             'retrieval_candidates').index(dial)
         write_data[big].get('candidate_scores')[small].get('scores')[index] = logis
 

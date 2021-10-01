@@ -49,6 +49,7 @@ def embedding_prediction(file_dir):
             objects_num = label["objects_num"][0]
             action = label["action"][0]
 
+
             if eid not in merge_from_system.keys():
                 merge_from_system[eid] = {from_system_num: {'num': 1, 'prob': label["from_system"][1]}}
                 merge_objects_num[eid] = {objects_num: {'num': 1, 'prob': label["objects_num"][1]}}
@@ -58,6 +59,7 @@ def embedding_prediction(file_dir):
                     merge_from_system[eid][from_system_num]['prob'] += label["from_system"][1]
                     merge_from_system[eid][from_system_num]['num'] += 1
                 else:
+                    merge_from_system[eid][from_system_num] = {'prob':0.0,'num':0}
                     merge_from_system[eid][from_system_num]['prob'] = label["from_system"][1]
                     merge_from_system[eid][from_system_num]['num'] = 1
 
@@ -65,6 +67,7 @@ def embedding_prediction(file_dir):
                     merge_objects_num[eid][objects_num]['prob'] += label["objects_num"][1]
                     merge_objects_num[eid][objects_num]['num'] += 1
                 else:
+                    merge_objects_num[eid][objects_num] = {'prob':0.0,'num':0}
                     merge_objects_num[eid][objects_num]['prob'] = label["objects_num"][1]
                     merge_objects_num[eid][objects_num]['num'] = 1
 
@@ -72,6 +75,7 @@ def embedding_prediction(file_dir):
                     merge_action[eid][action]['prob'] += label["action"][1]
                     merge_action[eid][action]['num'] += 1
                 else:
+                    merge_action[eid][action] = {'prob':0.0,'num':0}
                     merge_action[eid][action]['prob'] = label["action"][1]
                     merge_action[eid][action]['num'] = 1
 
