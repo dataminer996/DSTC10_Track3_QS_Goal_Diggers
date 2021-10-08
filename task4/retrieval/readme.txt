@@ -26,7 +26,7 @@ python3 lasttrain.py 5e-5  15 2.0
 docker file: gs://tangliang-commit/public/featuredocker.tar
 cd task4/generate/generagefeature
 python3 track3_retrival_pred.py gen_dev.bin data/simmc2_dials_dstc10_devtest_retrieval_candidates.json  data/simmc2_dials_dstc10_devtest.json retrival_dev.bin (for devtest)
-python3 track3_retrival_pred_teststd.py gen_dev.bin data/simmc2_dials_dstc10_devtest_retrieval_candidates.json  data/simmc2_dials_dstc10_devtest.json retrival_dev.bin (for teststd)
+python3 track3_retrival_pred_teststd.py gen_dev.bin data/simmc2_dials_dstc10_teststd_retrieval_candidates_public  data/simmc2_dials_dstc10_teststd_public.json retrival_dev.bin (for teststd)
 cp retrival_dev.bin  ../../retrieval/oscar_retri_v1/data/dev.bin
 
 

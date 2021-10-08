@@ -57,7 +57,7 @@ cp gen_retri_dev.bin ../../task4/retrival/oscar_retri_v1/data/dev.bin
 cd task4/retrival/oscar_retri_v1
 python3 last_pred.py modelgood find (need GPU)
 cd task4/generate/oscargen_noobj_newdata
-cp task4/retrival/oscar_retri_v1/modelgood/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin .
+cp ../../task4/retrival/oscar_retri_v1/modelgood/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin .
 python3 get_final_genearte.py  genresulefilename.bin resultfromsys.bin newresult.txt
 
 (for teststd) python3 ./format_task4_generation.py \
