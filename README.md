@@ -16,8 +16,10 @@ concat email: josjoy0413@gmail.com or tangliang95271@gmail.com
 ### TASK3
 ./task3/result/dstc10-simmc-teststd-pred-subtask-3.json
 
-### TASK4-generation
+### TASK4-generation-Ensemble
 ./task4/generate/result/dstc10-simmc-teststd-pred-subtask-4-generation.json
+### TASK4-generation-single
+./task4/generate/resultsingle/dstc10-simmc-teststd-pred-subtask-4-generation.json
 
 ### TASK4-retrieval
 ./task4/retrieval/results/dstc10-simmc-teststd-pred-subtask-4-retrieval.json

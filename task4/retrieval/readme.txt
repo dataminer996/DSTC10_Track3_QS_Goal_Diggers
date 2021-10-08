@@ -37,11 +37,11 @@ docker file: gs://tangliang-commit/public/oscarandfewshot.tar
 python3 last_pred.py modelgood find (need GPU)
 
 (for devtest)
-python3 ./format_task4_retrieval_0923.py  --dir-bin oscar_retri_v1/0918/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin  --split-path ../generate/generagefeature/data/simmc2_dials_dstc10_devtest.json  --save-path  ./result/dstc10-simmc-devtest-pred-subtask-4-retrieval.json
+python3 ./format_task4_retrieval_0923.py  --dir-bin oscar_retri_v1/modelgood/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin  --split-path ../generate/generagefeature/data/simmc2_dials_dstc10_devtest.json  --save-path  ./result/dstc10-simmc-devtest-pred-subtask-4-retrieval.json
 
 (for teststd)
 python3 ./format_task4_retrieval_0923_teststd.py \
- --dir-bin oscar_retri_v1/0918/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin \
+ --dir-bin oscar_retri_v1/modemodelgoodd/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin \
  --split-path ../generate/generagefeature/data/simmc2_dials_dstc10_teststd_retrieval_candidates_public.json \
  --save-path  ./result/dstc10-simmc-teststd-pred-subtask-4-retrieval.json
 
