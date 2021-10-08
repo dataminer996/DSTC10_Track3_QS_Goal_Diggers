@@ -3,7 +3,7 @@
 SPLIT='devtest'
 SAVE_PATH='../result'
 DATA_DIR='../data'
-PRED_DIR='../result/prediction/'
+PRED_DIR='../result/prediction_'$SPLIT
 
 python3 ./format_task1.py \
  --step1-pred-txt $PRED_DIR \

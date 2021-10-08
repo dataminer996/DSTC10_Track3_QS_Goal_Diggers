@@ -622,7 +622,7 @@ def run_finetuning(config: configure_finetuning.FinetuningConfig):
       preprocessor.prepare_predict(tasks, 'dev')
     
     if config.do_predict:
-      preprocessor.prepare_predict(tasks, 'devtest')
+      preprocessor.prepare_predict(tasks, config.do_predict_split)
 
 
 def main():

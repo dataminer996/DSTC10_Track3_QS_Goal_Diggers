@@ -38,7 +38,7 @@ def step3_process(step3_target_data, step3_pred_data):
             slot_key = target_list[3]
             slot_value = target_list[4]
             #print(slot_key, slot_value)
-            print(eid, pred_eid)
+            #print(eid, pred_eid)
             assert eid == pred_eid
             if eid in result.keys():
                 if slot_key in result[eid].keys():
@@ -64,6 +64,7 @@ def step3_process(step3_target_data, step3_pred_data):
 def step3_embedding(step3_target, file_dir):
     result = {}
     for file_name in glob.glob(file_dir + '/*'):
+        print('reading: {}'.format(file_name))
         step3_pred = open(file_name, 'r').readlines()
         pred = step3_process(step3_target, step3_pred)
         for eid, slot in pred.items():
@@ -73,13 +74,14 @@ def step3_embedding(step3_target, file_dir):
                 if key not in result[eid].keys():
                     result[eid][key] = []
                 result[eid][key].append(value)
+    #print(result)
     output = {}
     for eid, value in result.items():
         output[eid] = {}
         for slot_key, sub_list in value.items():
             sub_list.sort(key=lambda x: x[1], reverse=True)
-            output[eid][slot_key] = sub_list[0][0]
-    #print(output)
+            output[eid][slot_key] = sub_list[0]
+    #iprint(output)
     return output
 
 
@@ -187,22 +189,23 @@ def parse_prediction(args):
                                                                                    args['action_mapping_path'])
     #objects_pred = json.load(open(args['step2_result'], 'r'))
     #dir_bin = args['step2_bin']
+    action_pred = json.load(open(args['action_result'], 'r'))
     step3_pred_data = args['step3_pred_txt']
     step3_target_data = open(args['step3_traget_txt'], 'r').readlines()
 
     step3_pred_dict = step3_embedding(step3_target_data, step3_pred_data)
-    #print(step3_pred_dict)
+    print(step3_pred_dict)
     output_result = {}
-    for index, line in enumerate(step1_pred_data):
-        if line:
-            pred_json = json.loads(line)
-            pred_eid = str(pred_json["eid"])
-            pred_action = pred_json["action"]
-            pred_action_prob = pred_json["action_prob"]
-            pred_disambiguate = pred_json["disambiguate"]
-            pred_disambiguate_prob = pred_json["disambiguate_prob"]
-            pred_slot = pred_json["slot"]
-            pred_slot_prob = pred_json["slot_prob"]
+    for pred_eid, pred_action in action_pred.items():
+        
+            #pred_json = json.loads(line)
+            #pred_eid = str(pred_json["eid"])
+            #pred_action = pred_json["action"]
+            #pred_action_prob = pred_json["action_prob"]
+            #pred_disambiguate = pred_json["disambiguate"]
+            #pred_disambiguate_prob = pred_json["disambiguate_prob"]
+            #pred_slot = pred_json["slot"]
+            #pred_slot_prob = pred_json["slot_prob"]
 
             pred_action_name = mapping_action[int(pred_action)]
 
@@ -222,14 +225,14 @@ def parse_prediction(args):
                                 output_result[pred_eid]['act_attributes']['request_slots'].append(slot_value)
                     elif slot_key == 'assetType':
                         output_result[pred_eid]['act_attributes']['slot_values']['type'] = \
-                            step3_pred_dict[pred_eid][slot_key][0][0]
+                            step3_pred_dict[pred_eid][slot_key][0]
                     elif slot_key == 'size':
                         output_result[pred_eid]['act_attributes']['slot_values']['size'] = \
-                            step3_pred_dict[pred_eid][slot_key][0][0].upper()
+                            step3_pred_dict[pred_eid][slot_key][0].upper()
                     else:
                         #print(step3_pred_dict[pred_eid][slot_key])
                         output_result[pred_eid]['act_attributes']['slot_values'][slot_key] = \
-                            step3_pred_dict[pred_eid][slot_key][0][0]
+                            step3_pred_dict[pred_eid][slot_key][0]
             except:
                 continue
     #output_result = step2_process(dir_bin, output_result)
@@ -276,7 +279,7 @@ def main(args):
     dialogs_output = {"dialogue_data": []}
 
     output_result = parse_prediction(args)
-    # print(output_result)
+    #print(output_result)
 
     for dialog_id, dialog_datum in enumerate(dialogs["dialogue_data"]):
         dialogue_idx = dialog_datum["dialogue_idx"]
@@ -316,6 +319,9 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--action-result", help="Path to prediction of action"
+    )
     parser.add_argument(
         "--step2-result", help="Path to prediction of step2"
     )

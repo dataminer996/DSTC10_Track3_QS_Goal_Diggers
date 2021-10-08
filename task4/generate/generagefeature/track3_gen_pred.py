@@ -386,7 +386,7 @@ def search(json_name, dir_name, startid, endid):
                 print("image feature save")
                 utils_f.save_imagef("gen"+ str(startid))
                 # CUDA_VISIBLE_DEVICES=4 python3 searchtotal_new.py 0 2500
-    filename = "gendev.bin"
+    filename = "gen_dev.bin"
     with open(filename, 'wb') as fp:
         pickle.dump(save, fp)
     with open('picture_mistake.bin', 'wb') as picture:

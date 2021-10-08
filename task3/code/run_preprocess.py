@@ -44,11 +44,11 @@ def parse_slot_key(args, mapping_slot):
 
 def train(args, split, slot_candidate):
         count = 0
-        read_path = args[f"simmc_{split}_json"]
+        read_path = args[f"simmc_json"]
         print(f"Reading: {read_path}")
         with open(read_path, "r") as file_id:
             dialogs = json.load(file_id)
-        target_path = args[f"{split}_target_txt"]
+        target_path = args[f"target_txt"]
         target_json = {}
         with open(target_path, "r") as file_id:
             lines = file_id.readlines()
@@ -56,7 +56,6 @@ def train(args, split, slot_candidate):
                 if line:
                     chars, pos_tags, _, _, _, _, _, eid = line.strip().split('\t')
                     target_json[eid] = [chars, pos_tags]
-
         # Reformat into simple strings with positive and negative labels.
         # (dialog string, label)
         save_path = os.path.join(
@@ -127,7 +126,7 @@ def train(args, split, slot_candidate):
 
 def devtest(args, split, slot_candidate):
         count = 0
-        read_path = args["simmc_{}_json".format(split)]
+        read_path = args["simmc_json"]
         print("Reading: {}".format(read_path))
         with open(read_path, "r") as file_id:
             dialogs = json.load(file_id)
@@ -136,7 +135,7 @@ def devtest(args, split, slot_candidate):
             step1_action = json.load(file_id)
 
         target_json = {}
-        target_path = args[f"{split}_target_txt"]
+        target_path = args[f"target_txt"]
         with open(target_path, "r") as file_id:
             lines = file_id.readlines()
             for line in lines:
@@ -163,7 +162,10 @@ def devtest(args, split, slot_candidate):
                     action_label = mapping_action[int(step1_action[eid])]
                    
                     #response
-                    response = turn_datum["system_transcript"]
+                    try:
+                        response = turn_datum["system_transcript"]
+                    except:
+                        response = ''
  
                     count += 1
                  
@@ -183,29 +185,23 @@ def devtest(args, split, slot_candidate):
 
 def main(args):
     slot_candidate = get_slot_candidate(args)
-    train(args, 'train', slot_candidate)
-    train(args, 'dev', slot_candidate)
-    devtest(args, 'devtest', slot_candidate)
+    if args['split'] == 'train':
+        train(args, 'train', slot_candidate)
+    elif args['split'] == 'dev':
+        train(args, 'dev', slot_candidate)
+    else:
+        devtest(args, args['split'], slot_candidate)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--simmc_train_json", default='./data/simmc2_dials_dstc10_train.json', help="Path to SIMMC train file"
+        "--split", help="train,dev,devtest,teststd"
     )
     parser.add_argument(
-        "--simmc_dev_json", default='./data/simmc2_dials_dstc10_dev.json',
-                        help="Path to SIMMC dev file")
-    parser.add_argument(
-        "--simmc_devtest_json", default='./data/simmc2_dials_dstc10_devtest.json', help="Path to SIMMC devtest file"
+        "--simmc_json", default='./data/simmc2_dials_dstc10_train.json', help="Path to SIMMC file"
     )
     parser.add_argument(
-        "--train-target-txt",  help="Path to train target of step1"
-    )
-    parser.add_argument(
-        "--dev-target-txt",  help="Path to dev target of step1"
-    )
-    parser.add_argument(
-        "--devtest-target-txt",  help="Path to devtest target of step1"
+        "--target-txt",  help="Path to train target of step1"
     )
     parser.add_argument(
         "--step1-action",  help="Path to action embedding of step1"

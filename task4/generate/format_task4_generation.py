@@ -45,9 +45,11 @@ def main(args):
     for dialog_id, dialog_datum in enumerate(dialogs["dialogue_data"]):
         dialog_idx = dialog_datum["dialogue_idx"]
         predictions = []
-        for turn_id, turn_datum in enumerate(dialog_datum["dialogue"]):
-            eid = str(dialog_id * 100 + turn_id)
-            predictions.append({"turn_id": turn_datum['turn_idx'], "response": output_result[eid]})
+        #for turn_id, turn_datum in enumerate(dialog_datum["dialogue"]):
+        turn_id = len(dialog_datum["dialogue"]) - 1
+        turn_datum = dialog_datum["dialogue"][turn_id]
+        eid = str(dialog_id * 100 + turn_id)
+        predictions.append({"turn_id": turn_datum['turn_idx'], "response": output_result[eid]})
         dialogs_output.append({"dialog_id": dialog_idx, "predictions": predictions})
     json.dump(dialogs_output, output_path)
 

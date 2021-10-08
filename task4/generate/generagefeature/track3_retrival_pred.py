@@ -26,7 +26,7 @@ newfeatures_1 = []
 path1 = sys.argv[2]
 path2 = sys.argv[3]
 
-nes_features = list(get_r.get_retrieval(path1, path2))
+nes_features = list(get_r.get_retrievali_devtest(path1, path2))
 # print(data)
 #bin_file = sys.argv[1]
 #with open(bin_file, 'wb') as f:

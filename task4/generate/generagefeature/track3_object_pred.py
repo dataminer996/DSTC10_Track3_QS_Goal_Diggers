@@ -184,11 +184,11 @@ def search(json_name, dir_name, startid, endid):
                 new_data.append(data[i])
         return new_data
 
-    def s_object_get(did,dialogue):
+    def s_object_get(did,dialogue,firstend):
         global from_sys_label
         final = []
 #        round = int(int(did)/100)
-        track = int(did)%100
+        track = firstend-1 #int(did)%100
         length = range(len(dialogue))
         dialogue_thisround = dialogue
         
@@ -199,12 +199,13 @@ def search(json_name, dir_name, startid, endid):
                             used_object = dialogue_thisround[k]['system_transcript_annotated']['act_attributes']['objects']
                             if used_object!=[]:
                                 for l in used_object:
+                                  #if l not in final:
                                     final.append(l)
         final = getNonRepeatList(final)
         return final
 
 
-    def read_thisturn(dialogue_thisround, scenefile,domain,dialogue,did,fromsys_flag):
+    def read_thisturn(dialogue_thisround, scenefile,domain,dialogue,did,fromsys_flag,firstend):
 
         # 统计本轮有多少个dialogue对话字典
         count_dialogue = np.arange(len(dialogue_thisround))
@@ -212,7 +213,7 @@ def search(json_name, dir_name, startid, endid):
         # 1.获取对话内容（先用户后系统）
         dialogue_final = []  # 需要return
         objectsid = []
-        objectsid_sys = s_object_get(did,dialogue)
+        objectsid_sys = s_object_get(did,dialogue,firstend)
         
         # 进入本轮对话字典
         for x in count_dialogue:
@@ -261,7 +262,7 @@ def search(json_name, dir_name, startid, endid):
             # 4.3.2进入循环添加all_type
             prefab_len = np.arange(len(id_prefab))
             type_final_old = []
-            #for l in prefab_len:
+           # for l in prefab_len:
             #    temp = get_json_value(fashion, str(prefab_final[l]))
             #    if temp != False:
             #        type_temp = get_json_value(temp[0], 'type')
@@ -269,7 +270,7 @@ def search(json_name, dir_name, startid, endid):
             #    if temp == False:
             #        temp = get_json_value(furniture, str(prefab_final[l]))
             #        type_temp = get_json_value(temp[0], 'type')
-            #        type_final_old.append(type_temp[0])
+             #       type_final_old.append(type_temp[0])
 
 
 
@@ -471,7 +472,7 @@ def search(json_name, dir_name, startid, endid):
             # 调用函数read_oneturn
 
             if 1:
-              dialogue_final,scene_thisround,id_final,type_final,bbox_final,label_final,image_feature,prefab_final,objnum,findnum = read_thisturn(dialogue_thisround, scene_round,domain,dialogue_sys,diag_id,0)
+              dialogue_final,scene_thisround,id_final,type_final,bbox_final,label_final,image_feature,prefab_final,objnum,findnum = read_thisturn(dialogue_thisround, scene_round,domain,dialogue_sys,diag_id,0,0)
             
               if dialogue_final == -2:
                    continue
@@ -480,7 +481,7 @@ def search(json_name, dir_name, startid, endid):
                   save.append((dialogue_final,scene_thisround,diag_id,id_final,type_final,bbox_final,label_final,image_feature,prefab_final))
               
               if scene_track != '-1':
-                       dialogue_final,scene_thisround,id_final,type_final,bbox_final,label_final,image_feature,prefab_final,objnum1,findnum1  = read_thisturn(dialogue_thisround, scene_track,domain,dialogue_sys,diag_id,1)
+                       dialogue_final,scene_thisround,id_final,type_final,bbox_final,label_final,image_feature,prefab_final,objnum1,findnum1  = read_thisturn(dialogue_thisround, scene_track,domain,dialogue_sys,diag_id,1,int(list(scenefile.keys())[1]))
                        if dialogue_final == -1:
                             print('+++++++++++++++find the error id', int(i*100+j),objnum,objnum1,findnum,findnum1)
                             picture_mistake_all.append(int(i * 100 + j))

@@ -283,7 +283,7 @@ def save_pred_image_otherview(dialogue_final,image_filename, bboxlist, typelist,
     if image_filename in image_filename_list:
         return
 
-    image_filename_list.append(image_filename)
+    image_filename_list.append(dialogue_final)
 
     # TODO
     #    save_dir_root = 'trainimage0910'
@@ -293,7 +293,7 @@ def save_pred_image_otherview(dialogue_final,image_filename, bboxlist, typelist,
             obj = str(obj)
             if prefab in path2namedict.keys():
                 filename = path2namedict[prefab]
-                os.system("/bin/cp   data/otherviewimage/" +  filename +  "  " + os.path.join(save_dir_root,  'did_' + str(dialogue_final) +   '_objid_' + obj + ".jpg"))
+                os.system("/bin/cp   otherviewimage/" +  filename +  "  " + os.path.join(save_dir_root,  'did_' + str(dialogue_final) +   '_objid_' + obj + ".jpg"))
                 print("replace image ",dialogue_final,obj)
                 continue
             if len(list(itertools.filterfalse(lambda x: x >= 0, bbox))) == 0 and bbox[2] > bbox[0] and bbox[3] > bbox[

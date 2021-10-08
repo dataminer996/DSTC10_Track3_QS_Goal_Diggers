@@ -4,6 +4,7 @@ import utils_img
 import jsonpath
 import numpy as np
 import os
+import copy
 import sys
 #json_name = 'simmc2_dials_dstc10_train.json'
 #json_name = 'simmc2_dials_dstc10_devtest.json'
@@ -161,23 +162,24 @@ def search(json_name, dir_name, startid, endid):
 
             # label(需要这一轮对话所检索出的objectid)
             objects = objectsid[len(objectsid) - 1]
-            objects_new = list(set(objects))
+            #objects_new = list(set(objects))
             # 将检索出的objects与indexid（sorted）相比较，生成label
             # 获取一致的元素的下标
-            label_locate = []
-            for p in objects:
-                for q in prefab_len:
-                    if p == id_final[q]:
-                        label_locate.append(q)
+            #label_locate = []
+            #for p in objects:
+            #    for q in prefab_len:
+            #        if p == id_final[q]:
+            #            label_locate.append(q)
 
             # 生成新数组
-            label_final = [0] * prefab_len
-            for e in prefab_len:
-                for f in label_locate:
-                    if e == f:
-                        label_final[e] = 1
+            #label_final = [0] * prefab_len
+            #for e in prefab_len:
+            #    for f in label_locate:
+            #        if e == f:
+            #            label_final[e] = 1
 
             # 获取image——feature
+            scene_thisround_old  = copy.deepcopy(scene_thisround)
             scene_thisround_new = scene_thisround[2:] + ".png"
             scene_thisround_1  = scene_thisround + ".png"
             part1 = 'data/simmc2_scene_images_dstc10_public_part1'
@@ -212,18 +214,18 @@ def search(json_name, dir_name, startid, endid):
                objname_final.append(prefab)
             save_dir_root = sys.argv[2]
 			
-            obj_num = 0
-            for label in label_final:
-                 if label == 1:
-                    obj_num = obj_num + 1
-            if (len(objects_new) != obj_num):
-               print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++find the error objnum and objid", len(objects),obj_num,objects,id_final)
-            if obj_num != 0 or len(objects) == 0:
+            #obj_num = 0
+            #for label in label_final:
+            #     if label == 1:
+            #        obj_num = obj_num + 1
+            #if (len(objects_new) != obj_num):
+            #   print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++find the error objnum and objid", len(objects),obj_num,objects,id_final)
+            #if obj_num != 0 or len(objects) == 0:
                #image_feature = readimage_feature(scene_thisround, bbox_final)
-               image_feature = utils_img.save_pred_image_otherview(did,scene_thisround, bbox_final,type_final,id_final,save_dir_root,prefab_final)
+            image_feature = utils_img.save_pred_image_otherview(scene_thisround_old,scene_thisround, bbox_final,type_final,id_final,save_dir_root,prefab_final)
                #image_feature = readimagefrombin_feature(scene_thisround, bbox_final)
-            else:               
-               return  (-1,scene_thisround,id_final,type_final,bbox_final,label_final,None,prefab_final,0,0)			
+            #else:               
+            #   return  (-1,scene_thisround,id_final,type_final,bbox_final,label_final,None,prefab_final,0,0)			
             #for r in bbox_length:
             #    bool_bbox = get_replace_flag(list(prefab_final[r]), list(bbox_final[r]))
             #    flag_list.append(bool_bbox[0])
@@ -232,10 +234,10 @@ def search(json_name, dir_name, startid, endid):
             #image_feature = utils_img.save_pred_image(did,scene_thisround, bbox_final,type_final,id_final,save_dir_root)
             #image_feature = utils_f.readimagefrombin_feature(scene_thisround, bbox_final,flag_list,prefab_final)
         #    image_feature = readimage_feature(scene_thisround, bbox_final)
-            return (dialogue_final,scene_thisround,id_final,type_final,bbox_final,label_final,image_feature,prefab_final,len(objects_new),obj_num)
+            return (dialogue_final,scene_thisround,id_final,type_final,bbox_final,None,image_feature,prefab_final,0,0)
 
 
-    train = open(str(dir_name)+str(json_name), 'r')
+    train = open(str(json_name), 'r')
     data = json.load(train)
 
     # 伪函数，read_image
@@ -297,7 +299,7 @@ def search(json_name, dir_name, startid, endid):
 
                 else:
                     scene_round = list(scenefile.values())[0]                    
-                    scene_track = list(scenefile.values())[1]
+                   # scene_track = list(scenefile.values())[1]
             else:
                 scene_round = list(scenefile.values())[0]
 
@@ -317,23 +319,9 @@ def search(json_name, dir_name, startid, endid):
               #if dialogue_final != -1 and objnum > findnum:                  
               #    save.append((dialogue_final,scene_thisround,diag_id,id_final,type_final,bbox_final,label_final,image_feature,prefab_final))
               
-              if dialogue_final == -1 or objnum > findnum:
-                  if scene_track != '-1':
+              if scene_track != '-1':
                        dialogue_final,scene_thisround,id_final,type_final,bbox_final,label_final,image_feature,prefab_final,objnum1,findnum1  = read_thisturn(dialogue_thisround, scene_track,diag_id)
-                       if dialogue_final == -1:
-                            print('+++++++++++++++find the error id', int(i*100+j),objnum,objnum1,findnum,findnum1)
-                            picture_mistake_all.append(int(i * 100 + j))
-                       elif objnum1 <= findnum + findnum1:
-                            picture_mistake.append(int(i * 100 + j))
-                       else:
-                            picture_mistake_all.append(int(i * 100 + j))                            
-                            print('+++++++++++++++find the error id', int(i*100+j),objnum,findnum,findnum1)
-                  else:
-                       picture_mistake_all.append(int(i * 100 + j))
-                       print('+++++++++++++++find the error id', int(i*100+j),objnum,findnum)
-                       continue
-              
-                  print('picture_mistake_did', int(i*100+j),objnum,findnum,findnum1)
+       
            # except:            
            #     picture_mistake_all.append(int(i * 100 + j))
            #     print("++++++++++++++++++++++++++++find the error ===",diag_id)
