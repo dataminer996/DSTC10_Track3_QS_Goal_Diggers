@@ -42,11 +42,11 @@ def step3_process(step3_target_data, step3_pred_data):
             assert eid == pred_eid
             if eid in result.keys():
                 if slot_key in result[eid].keys():
-                    result[eid][slot_key].append((slot_value, label_prob))
+                    result[eid][slot_key].append([slot_value, label_prob])
                 else:
-                    result[eid][slot_key] = [(slot_value, label_prob)]
+                    result[eid][slot_key] = [[slot_value, label_prob]]
             else:
-                result[eid] = {slot_key: [(slot_value, label_prob)]}
+                result[eid] = {slot_key: [[slot_value, label_prob]]}
         else:
             # result[eid] = {slot_key: [(slot_value, label_prob)]}
             continue
@@ -80,7 +80,10 @@ def step3_embedding(step3_target, file_dir):
         output[eid] = {}
         for slot_key, sub_list in value.items():
             sub_list.sort(key=lambda x: x[1], reverse=True)
-            output[eid][slot_key] = sub_list[0]
+            if slot_key == 'request_slots':
+                output[eid][slot_key] = sub_list
+            else:
+                output[eid][slot_key] = sub_list[0]
     #iprint(output)
     return output
 
@@ -217,12 +220,17 @@ def parse_prediction(args):
                                            'objects': []
                                        }
                                        }
-            try:
-             for slot_key in step3_pred_dict[pred_eid].keys():
+            if pred_eid in step3_pred_dict.keys():
+                for slot_key in step3_pred_dict[pred_eid].keys():
+                    #print(slot_key)
                     if slot_key == 'request_slots':
+                        #print(step3_pred_dict[pred_eid][slot_key])
                         for slot_value, slot_prob in step3_pred_dict[pred_eid][slot_key]:
-                            if slot_prob > 0.5:
+                       
+                            slot_prob = float(slot_prob)
+                            if slot_prob > 0.5 and slot_value not in output_result[pred_eid]['act_attributes']['request_slots']:
                                 output_result[pred_eid]['act_attributes']['request_slots'].append(slot_value)
+                                #print(slot_value)
                     elif slot_key == 'assetType':
                         output_result[pred_eid]['act_attributes']['slot_values']['type'] = \
                             step3_pred_dict[pred_eid][slot_key][0]
@@ -233,7 +241,7 @@ def parse_prediction(args):
                         #print(step3_pred_dict[pred_eid][slot_key])
                         output_result[pred_eid]['act_attributes']['slot_values'][slot_key] = \
                             step3_pred_dict[pred_eid][slot_key][0]
-            except:
+            else:
                 continue
     #output_result = step2_process(dir_bin, output_result)
     return output_result
