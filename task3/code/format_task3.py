@@ -56,7 +56,12 @@ def step3_process(step3_target_data, step3_pred_data):
         output[eid] = {}
         for slot_key, sub_list in value.items():
             sub_list.sort(key=lambda x: x[1], reverse=True)
-            output[eid][slot_key] = sub_list[0]
+            #output[eid][slot_key] = sub_list[0]
+            if slot_key == 'request_slots':
+                output[eid][slot_key] = sub_list
+            else:
+                output[eid][slot_key] = sub_list[0]
+
     #print(output)
     return output
 
@@ -73,7 +78,10 @@ def step3_embedding(step3_target, file_dir):
             for key, value in slot.items():
                 if key not in result[eid].keys():
                     result[eid][key] = []
-                result[eid][key].append(value)
+                if key == 'request_slots':
+                    result[eid][key] += value
+                else:
+                    result[eid][key].append(value)
     #print(result)
     output = {}
     for eid, value in result.items():
@@ -222,9 +230,9 @@ def parse_prediction(args):
                                        }
             if pred_eid in step3_pred_dict.keys():
                 for slot_key in step3_pred_dict[pred_eid].keys():
-                    #print(slot_key)
+                    print(slot_key)
                     if slot_key == 'request_slots':
-                        #print(step3_pred_dict[pred_eid][slot_key])
+                        print(step3_pred_dict[pred_eid][slot_key])
                         for slot_value, slot_prob in step3_pred_dict[pred_eid][slot_key]:
                        
                             slot_prob = float(slot_prob)
