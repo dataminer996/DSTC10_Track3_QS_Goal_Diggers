@@ -108,3 +108,7 @@ python format_task1.py \
  --save-path: path to save result
  ```
 ***
+####from_system label:
+{split}_sobject.json contains from_system label, which means:
+Determine whether the user_objectid of this case is included in the sys_obj_id of the previous case in this round. If it meets the requirements, mark from_system as 1, otherwise it is 0. If from_system is 1, put the system_obj_id that appeared before and pass it in s_object after deduplication.
+***
