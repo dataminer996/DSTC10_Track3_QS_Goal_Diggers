@@ -1,10 +1,12 @@
 
 ## TASK 3
+The models of task1 & task3 are baesd on electra (https://github.com/google-research/electra), with AAnet. For task1, we constructed a multi-task model to predict action, disamboguate label, slot key, objects number, from system labels, while task3 we constructed a binary classification model to predict the slot value.
+
 Directory Structure: task3/[code | data | model | result]
 
 *download data and finetune model by:*
 https://drive.google.com/drive/folders/1ILTFnaRTTcGWAzYXJnt_3QmeiVgE501T?usp=sharing
-
+gs://tangliang-commit/public/task3
 ***
 ### preprocess
 *preprocess dataset for step3 model*

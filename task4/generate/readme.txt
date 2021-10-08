@@ -45,8 +45,26 @@ python3  format_task4_generation.py  --generation-pred-txt  oscargen_noobj_newda
 
 (for teststd) python3 ./format_task4_generation.py \
  --generation-pred-txt  oscargen_noobj_newdata/modelgood/find_0822lrnew_0.00017batch18weight3gpu1_epoch_242/checkpoint-241-42592/resulefile.txt \
- --split-path   ../generate/generagefeature/data/simmc2_dials_dstc10_teststd_public \
+ --split-path   ../generate/generagefeature/data/simmc2_dials_dstc10_teststd_public.json \
  --save-path  ./result/dstc10-simmc-teststd-pred-subtask-4-generation.json
+
+
+7.  Ensemble predcmd:
+cd task4/generate/oscargen_noobj_newdata
+python3 pred_strdir.py  modelgood  find  (need GPU)
+python3 create_genresulte_retri_feature.py data/dev.bin modelgood gen_retri_dev.bin
+cp gen_retri_dev.bin ../../task4/retrival/oscar_retri_v1/data/dev.bin 
+cd task4/retrival/oscar_retri_v1
+python3 last_pred.py modelgood find (need GPU)
+cd task4/generate/oscargen_noobj_newdata
+cp task4/retrival/oscar_retri_v1/modelgood/find_0822_lowercase_lrnew_5e-05batch3weight2.0gpu6_epoch_15/checkpoint-14-10575/resultfromsys.bin .
+python3 get_final_genearte.py  genresulefilename.bin resultfromsys.bin newresult.txt
+
+(for teststd) python3 ./format_task4_generation.py \
+ --generation-pred-txt  oscargen_noobj_newdata/newresult.txt \
+ --split-path   ../generate/generagefeature/data/simmc2_dials_dstc10_teststd_public.json \
+ --save-path  ./result/dstc10-simmc-teststd-pred-subtask-4-generation.json
+
 
 
 
